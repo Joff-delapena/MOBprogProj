@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export default function HomepageScreen() {
+export default function Homepage() {
   return (
     <View style={styles.container}>
       <Image
         source={require('./assets/ASPA.png')} 
-        style={styles.logo}
+        style={styles.logo} 
         resizeMode="contain"
       />
 

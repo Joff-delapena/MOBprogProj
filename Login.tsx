@@ -22,7 +22,7 @@ export default function LoginScreen({ navigation }) {
       const user = users.find(user => user.email === email && user.password === password);
       if (user) {
         setMessage('Login successful!');
-        navigation.navigate('HomepageScreen');
+        navigation.navigate('Homepage');
       } else {
         setMessage('Invalid email or password.');
       }
@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     left: -25,
     margin: 10,
     height: 50,
+
   },
   header: {
     fontSize: 36,

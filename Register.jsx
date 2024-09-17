@@ -17,21 +17,21 @@ export default function RegisterScreen({ navigation }) {
   const [message, setMessage] = useState('');
   const [terms, setTerms] = useState(false);
   const [countryOpen, setCountryOpen] = useState(false);
-  const [countryValue, setCountryValue] = useState('Philippines');
+  const [countryValue, setCountryValue] = useState('');
   const [countryItems, setCountryItems] = useState([
     { label: 'Philippines', value: 'Philippines', icon: () => <Image source={require('./assets/ph.png')} style={styles.flagIcon} /> },
     { label: 'USA', value: 'USA', icon: () => <Image source={require('./assets/us.png')} style={styles.flagIcon} /> },
     { label: 'Japan', value: 'Japan', icon: () => <Image source={require('./assets/jp.png')} style={styles.flagIcon} /> },
   ]);
   const [genderOpen, setGenderOpen] = useState(false);
-  const [genderValue, setGenderValue] = useState('Male');
+  const [genderValue, setGenderValue] = useState('');
   const [genderItems, setGenderItems] = useState([
     { label: 'Male', value: 'Male', icon: () => <Image source={require('./assets/male_icon.png')} style={styles.genderIcon} /> },
     { label: 'Female', value: 'Female', icon: () => <Image source={require('./assets/female_icon.png')} style={styles.genderIcon} /> },
   ]);
 
   const handleRegister = () => {
-    if (!fullname || !email || !password || !confirmPassword || !terms) {
+    if (!fullname || !email || !password || !confirmPassword || !terms || !countryValue || !genderValue) {
       setMessage('Please fill in all fields and agree to the terms.');
     } else if (!validateEmail(email)) {
       setMessage('Please enter a valid email address.');
@@ -229,4 +229,4 @@ const styles = StyleSheet.create({
     height: 10, 
     marginRight: 5,
   },
-});
+}); 
