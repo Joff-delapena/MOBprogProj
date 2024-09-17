@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Using icons for added design
+import { Ionicons } from '@expo/vector-icons';
 
 export default function HomepageScreen() {
   return (
@@ -11,7 +11,7 @@ export default function HomepageScreen() {
         resizeMode="contain"
       />
 
-      <Text style={styles.welcomeText}>Dashboard</Text>
+      <Text style={styles.welcomeText}>Dashboard</Text>  
 
       <View style={styles.cardContainer}>
         <TouchableOpacity style={styles.card}>
@@ -55,9 +55,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 30,
+    position: 'absolute',
+    top: -10,
+    left: -25,
+    margin: 10,
+    height: 50,
   },
   cardContainer: {
     flexDirection: 'row',
@@ -86,6 +88,6 @@ const styles = StyleSheet.create({
     color: '#cbc3e3',
     marginTop: 40,
     textAlign: 'center',
-    
+
   },
 });
