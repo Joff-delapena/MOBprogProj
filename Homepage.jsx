@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons'; // Using icons for added design
 
 export default function HomepageScreen() {
   return (
@@ -11,8 +12,30 @@ export default function HomepageScreen() {
       />
 
       <Text style={styles.welcomeText}>Dashboard</Text>
-      <Text style={styles.aText}>"wapa nahuman ni sir</Text>
-      <Text style={styles.aText}>kay wapa na finalize ang design"</Text>
+
+      <View style={styles.cardContainer}>
+        <TouchableOpacity style={styles.card}>
+          <Ionicons name="person-circle-outline" size={50} color="#4b0082" />
+          <Text style={styles.cardText}>Profile</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.card}>
+          <Ionicons name="stats-chart-outline" size={50} color="#4b0082" />
+          <Text style={styles.cardText}>Analytics</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.cardContainer}>
+        <TouchableOpacity style={styles.card}>
+          <Ionicons name="settings-outline" size={50} color="#4b0082" />
+          <Text style={styles.cardText}>Settings</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.card}>
+          <Ionicons name="help-circle-outline" size={50} color="#4b0082" />
+          <Text style={styles.cardText}>Support</Text>
+        </TouchableOpacity>
+      </View>
+
+      <Text style={styles.statusText}>"Wapa nahuman ni sir kay wapa na finalize ang design"</Text>
     </View>
   );
 }
@@ -21,28 +44,48 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor:'#4b0082', 
+    backgroundColor: '#4b0082', 
     alignItems: 'center',
+    padding: 20,
   },
   welcomeText: {
-    fontSize: 50,
-    top: -200,
-    left: 0,
-    margin: 0,
-    height: 50,
+    fontSize: 40,
     fontWeight: 'bold',
     color: '#cbc3e3',
+    marginBottom: 20,
   },
-  logo:{
-    top: -250,
-    left: 0,
-    margin: 0,
-    height: 50,
+  logo: {
+    width: 100,
+    height: 100,
+    marginBottom: 30,
   },
-
-  aText: {
+  cardContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 30,
+  },
+  card: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 10,
+    width: 130,
+    elevation: 3,
+  },
+  cardText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#4b0082',
+    marginTop: 10,
+  },
+  statusText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#4d517f',
+    color: '#cbc3e3',
+    marginTop: 40,
+    textAlign: 'center',
+    
   },
 });
