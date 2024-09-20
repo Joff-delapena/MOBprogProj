@@ -14,27 +14,34 @@ export default function Homepage() {
       <Text style={styles.welcomeText}>Dashboard</Text>  
 
       <View style={styles.cardContainer}>
-        <TouchableOpacity style={styles.card}>
+
+        <TouchableOpacity style={styles.person}>
           <Ionicons name="person-circle-outline" size={50} color="#4b0082" />
           <Text style={styles.cardText}>Profile</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.card}>
+
+        <TouchableOpacity style={styles.statsChart}>
           <Ionicons name="stats-chart-outline" size={50} color="#4b0082" />
           <Text style={styles.cardText}>Analytics</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.cardContainer}>
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity style={styles.settings}>
           <Ionicons name="settings-outline" size={50} color="#4b0082" />
           <Text style={styles.cardText}>Settings</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.card}>
+
+        <TouchableOpacity style={styles.help}>
           <Ionicons name="help-circle-outline" size={50} color="#4b0082" />
           <Text style={styles.cardText}>Support</Text>
         </TouchableOpacity>
-      </View>
 
+        <TouchableOpacity style={styles.menu}>
+          <Ionicons name="menu-outline" size={30} color="#fff" />
+        </TouchableOpacity>
+
+      </View>
       <Text style={styles.statusText}>"Wapa nahuman ni sir kay wapa na finalize ang design"</Text>
     </View>
   );
@@ -56,7 +63,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     position: 'absolute',
-    top: -10,
+    top: 30,
     left: -25,
     margin: 10,
     height: 50,
@@ -66,7 +73,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 30,
   },
-  card: {
+  person: {
     backgroundColor: '#fff',
     padding: 20,
     borderRadius: 10,
@@ -75,6 +82,40 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     width: 130,
     elevation: 3,
+  },
+  statsChart: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 10,
+    width: 130,
+    elevation: 3,
+  },
+  settings: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 10,
+    width: 130,
+    elevation: 3,
+  },
+  help: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 10,
+    width: 130,
+    elevation: 3,
+  },
+  menu: {
+    bottom: 360,
+    left: 10,
   },
   cardText: {
     fontSize: 16,

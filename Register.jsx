@@ -4,7 +4,7 @@ import { UserContext } from './UserContext';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 const validateEmail = (email) => {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;  
   return re.test(email);
 };
 
@@ -35,6 +35,8 @@ export default function RegisterScreen({ navigation }) {
       setMessage('Please fill in all fields and agree to the terms.');
     } else if (!validateEmail(email)) {
       setMessage('Please enter a valid email address.');
+    } else if (password.length < 8) {
+      setMessage('Password must be at least 8 characters long.');
     } else if (password !== confirmPassword) {
       setMessage('Passwords do not match, please try again.');
     } else {
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     position: 'static',
-    top: -40,
+    top: -50,
     left: -45,
     margin: 10,
     height: 50,

@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Linking } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { UserContext } from './UserContext';
 
 const validateEmail = (email) => {
@@ -11,6 +12,7 @@ export default function LoginScreen({ navigation }) {
   const { users } = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); 
   const [message, setMessage] = useState('');
 
   const handleLogin = () => {
@@ -18,6 +20,8 @@ export default function LoginScreen({ navigation }) {
       setMessage('Please fill in all fields.');
     } else if (!validateEmail(email)) {
       setMessage('Please enter a valid email address.');
+    } else if (password.length < 8) {
+      setMessage('Password must be at least 8 characters long.');
     } else {
       const user = users.find(user => user.email === email && user.password === password);
       if (user) {
@@ -28,6 +32,24 @@ export default function LoginScreen({ navigation }) {
       }
     }
   };
+
+  const handleFacebookLogin = () => {
+    const fbLoginUrl = 'https://www.facebook.com/login';
+    Linking.openURL(fbLoginUrl).catch(err => console.error('An error occurred', err));
+  };
+
+  const handleGoogleLogin = () => {
+    const googleLoginUrl = 'https://accounts.google.com/signin';
+    Linking.openURL(googleLoginUrl).catch(err => console.error('An error occurred', err));
+  };
+
+  const handleInstagramLogin = () => {
+    const instagramLoginUrl = 'https://www.instagram.com/accounts/login';
+    Linking.openURL(instagramLoginUrl).catch(err => console.error('An error occurred', err));
+  };
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  }; 
 
   return (
     <View style={styles.container}>
@@ -45,14 +67,24 @@ export default function LoginScreen({ navigation }) {
         keyboardType="email-address" 
         placeholderTextColor="#A9A9A9"  
       />
-      <TextInput 
-        style={styles.input} 
-        placeholder="Password" 
-        value={password} 
-        onChangeText={setPassword} 
-        secureTextEntry={true} 
-        placeholderTextColor="#A9A9A9"  
-      />
+      <View style={styles.passwordContainer}>
+        <TextInput 
+          style={styles.passwordInput} 
+          placeholder="Password" 
+          value={password} 
+          onChangeText={setPassword} 
+          secureTextEntry={!showPassword} 
+          placeholderTextColor="#A9A9A9"  
+        />
+      <TouchableOpacity onPress={togglePasswordVisibility} style={styles.eyeButton}>
+          <Icon 
+            name={showPassword ? 'visibility-off' : 'visibility'} 
+            size={25} 
+            color="#A9A9A9" 
+          />
+       </TouchableOpacity>
+           </View>
+
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
@@ -68,7 +100,35 @@ export default function LoginScreen({ navigation }) {
         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
           <Text style={styles.linkTextBlue}>Sign Up</Text>
         </TouchableOpacity>
+        
       </View>
+      <View style={styles.cardContainer}>
+        <TouchableOpacity style={styles.card} onPress={handleFacebookLogin}>
+          <Image
+            source={require('./assets/Facebook.png')}
+            style={styles.facebookIcon}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.card} onPress={handleGoogleLogin}>
+          <Image
+            source={require('./assets/google.png')} 
+            style={styles.googleIcon}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.card} onPress={handleInstagramLogin}>
+          <Image
+            source={require('./assets/ig.png')} 
+            style={styles.igIcon}
+            resizeMode="contain"
+            />  
+          </TouchableOpacity>
+          
+      </View>
+      <Text style={styles.statusText}>Or sign in with</Text>
     </View>
   );
 }
@@ -78,17 +138,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor:'#00001A', 
+    backgroundColor: '#00001A', 
     borderRadius: 10, 
     color: '#fff',
   },
   logo: {
     position: 'absolute',
-    top: -10,
+    top: 10,
     left: -25,
     margin: 10,
     height: 50,
-
   },
   header: {
     fontSize: 36,
@@ -103,7 +162,24 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginBottom: 15,
-    color: '#FFFFFF', 
+    color: '#FFFFFF',
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#FFF',
+    borderRadius: 5,
+    marginBottom: 15,
+  },
+  passwordInput: {
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    color: '#FFFFFF',
+  },
+  eyeButton: {
+    paddingHorizontal: 5,
   },
   button: {
     backgroundColor: '#cc00cc',
@@ -131,11 +207,48 @@ const styles = StyleSheet.create({
   },
   linkText: {
     color: '#FFF',
-    fontSize: 16,
+    fontSize: 18,
   },
   linkTextBlue: {
     color: '#cc00cc',
-    fontSize: 16,
+    fontSize: 18,
+    textDecorationLine: 'underline',
+  },
+  cardContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 40,
+    marginBottom: 40,
+  },
+  card: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '45%',
+  },
+  facebookIcon: {
+    width: 30,
+    height: 30,
+    top: 110,
+    left: 20
+  },
+  googleIcon: {
+    width: 30,
+    height: 30,
+    top: 110,
+    right: 60         
+  },
+  igIcon: {
+    width: 30,
+    height: 30,
+    top: 110,
+    right: 140
+  },
+  statusText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+    bottom: 10,
     textDecorationLine: 'underline',
   },
 });
