@@ -26,7 +26,7 @@ export default function LoginScreen({ navigation }) {
       const user = users.find(user => user.email === email && user.password === password);
       if (user) {
         setMessage('Login successful!');
-        navigation.navigate('Homepage');
+        navigation.navigate('GetStarted'); // Navigate to the Get Started screen after successful login
       } else {
         setMessage('Invalid email or password.');
       }
@@ -47,9 +47,10 @@ export default function LoginScreen({ navigation }) {
     const instagramLoginUrl = 'https://www.instagram.com/accounts/login';
     Linking.openURL(instagramLoginUrl).catch(err => console.error('An error occurred', err));
   };
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
-  }; 
+  };
 
   return (
     <View style={styles.container}>
@@ -76,14 +77,14 @@ export default function LoginScreen({ navigation }) {
           secureTextEntry={!showPassword} 
           placeholderTextColor="#A9A9A9"  
         />
-      <TouchableOpacity onPress={togglePasswordVisibility} style={styles.eyeButton}>
+        <TouchableOpacity onPress={togglePasswordVisibility} style={styles.eyeButton}>
           <Icon 
             name={showPassword ? 'visibility-off' : 'visibility'} 
-            size={25} 
+            size={20} 
             color="#A9A9A9" 
           />
-       </TouchableOpacity>
-           </View>
+        </TouchableOpacity>
+      </View>
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
@@ -93,6 +94,7 @@ export default function LoginScreen({ navigation }) {
           {message}
         </Text>
       ) : null}
+
       <View style={styles.link}>
         <Text style={styles.linkText}>
           Don't have an account?{' '}
@@ -100,8 +102,8 @@ export default function LoginScreen({ navigation }) {
         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
           <Text style={styles.linkTextBlue}>Sign Up</Text>
         </TouchableOpacity>
-        
       </View>
+
       <View style={styles.cardContainer}>
         <TouchableOpacity style={styles.card} onPress={handleFacebookLogin}>
           <Image
@@ -124,9 +126,8 @@ export default function LoginScreen({ navigation }) {
             source={require('./assets/ig.png')} 
             style={styles.igIcon}
             resizeMode="contain"
-            />  
-          </TouchableOpacity>
-          
+          />  
+        </TouchableOpacity>
       </View>
       <Text style={styles.statusText}>Or sign in with</Text>
     </View>
@@ -180,6 +181,7 @@ const styles = StyleSheet.create({
   },
   eyeButton: {
     paddingHorizontal: 5,
+    right: 5
   },
   button: {
     backgroundColor: '#cc00cc',
@@ -229,19 +231,19 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     top: 110,
-    left: 20
+    left: 20,
   },
   googleIcon: {
     width: 30,
     height: 30,
     top: 110,
-    right: 60         
+    right: 60,         
   },
   igIcon: {
     width: 30,
     height: 30,
     top: 110,
-    right: 140
+    right: 140,
   },
   statusText: {
     fontSize: 20,
