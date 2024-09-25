@@ -26,7 +26,7 @@ export default function LoginScreen({ navigation }) {
       const user = users.find(user => user.email === email && user.password === password);
       if (user) {
         setMessage('Login successful!');
-        navigation.navigate('GetStarted'); // Navigate to the Get Started screen after successful login
+        navigation.navigate('GetStarted'); // Navigate to GetStarted screen
       } else {
         setMessage('Invalid email or password.');
       }
@@ -50,7 +50,7 @@ export default function LoginScreen({ navigation }) {
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
-  };
+  }; 
 
   return (
     <View style={styles.container}>
@@ -94,7 +94,6 @@ export default function LoginScreen({ navigation }) {
           {message}
         </Text>
       ) : null}
-
       <View style={styles.link}>
         <Text style={styles.linkText}>
           Don't have an account?{' '}
@@ -103,7 +102,6 @@ export default function LoginScreen({ navigation }) {
           <Text style={styles.linkTextBlue}>Sign Up</Text>
         </TouchableOpacity>
       </View>
-
       <View style={styles.cardContainer}>
         <TouchableOpacity style={styles.card} onPress={handleFacebookLogin}>
           <Image
@@ -181,7 +179,7 @@ const styles = StyleSheet.create({
   },
   eyeButton: {
     paddingHorizontal: 5,
-    right: 5
+    right: 5,
   },
   button: {
     backgroundColor: '#cc00cc',

@@ -8,7 +8,7 @@ const GetStartedScreen = ({ navigation }) => {
       <Text style={styles.title2}>Reduce, Prevent, and Control.</Text>
       <TouchableOpacity
         style={styles.buttonContainer}
-        onPress={() => navigation.navigate('Homepage')}
+        onPress={() => navigation.navigate('Homepage')} 
       >
         <RNText style={styles.buttonText}>Get Started</RNText>
       </TouchableOpacity>
