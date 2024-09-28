@@ -1,100 +1,160 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Link } from 'expo-router'; 
+import { useFocusEffect } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient'; 
 
-export default function Homepage() {
+export default function Homepage({ navigation, route }) {
     const [menuVisible, setMenuVisible] = useState(false);
+    const [activityVisible, setActivityVisible] = useState(false);
+
+    const [lastTimer, setLastTimer] = useState(0);
+    const [lastSession, setLastSession] = useState('No sessions yet');
+    const [appUsageReduced, setAppUsageReduced] = useState(0);
 
     const toggleMenu = () => {
         setMenuVisible(!menuVisible);
     };
 
+    const toggleActivity = () => {
+        setActivityVisible(!activityVisible);
+    };
+
+    const handleMenuItemPress = (screen) => {
+        navigation.navigate(screen);
+        setMenuVisible(false);
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (route.params?.lastTimer) {
+                setLastTimer(route.params.lastTimer);
+                setLastSession(route.params.lastSession || 'No sessions yet');
+                setAppUsageReduced(route.params.appUsageReduced || 0);
+            }
+        }, [route.params])
+    );
+
     return (
-        <View style={styles.container}>
-            <Image
-                source={require('./assets/ASPA.png')}
-                style={styles.logo}
-                resizeMode="contain"
-            />
+        <LinearGradient
+            colors={['#6a0dad', '#4b0082', '#2b0042']} 
+            style={styles.gradientContainer}
+        >
+            <ScrollView contentContainerStyle={styles.container}>
+                <Image
+                    source={require('./assets/ASPA.png')}
+                    style={styles.logo}
+                    resizeMode="contain"
+                />
 
-            <Text style={styles.welcomeText}>Dashboard</Text>
+                <Text style={styles.welcomeText}>Welcome to Aspa</Text>
 
-            <View style={styles.cardContainer}>
-                <TouchableOpacity style={styles.menu} onPress={toggleMenu}>
+                <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Timer')}>
+                    <LinearGradient colors={['#cc00cc', '#a900a9']} style={styles.buttonBackground}>
+                        <Text style={styles.buttonText}>Start Preventer</Text>
+                    </LinearGradient>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.activityButton} onPress={toggleActivity}>
+                    <Text style={styles.activityButtonText}>
+                        {activityVisible ? 'Hide Recent Activity' : 'Show Recent Activity'}
+                    </Text>
+                </TouchableOpacity>
+
+                {activityVisible && (
+                    <View style={styles.recentActivity}>
+                        {lastTimer > 0 ? (
+                            <>
+                                <Text style={styles.activityText}>Last Timer: {lastTimer} minutes</Text>
+                                <Text style={styles.activityText}>Last Session: {lastSession}</Text>
+                                <Text style={styles.activityText}>App Usage Reduced: {appUsageReduced}%</Text>
+                            </>
+                        ) : (
+                            <Text style={styles.activityText}>No recent activity.</Text>
+                        )}
+                    </View>
+                )}
+
+                <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
                     <Ionicons name="menu-outline" size={30} color="#fff" />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.buttonContainer}>
-                    <Link href="/TimerScreen">
-                        <Text style={styles.buttonText}>Go to Preventer</Text>
-                    </Link>
-                </TouchableOpacity>
-            </View>
-
-            {menuVisible && (
-                <View style={styles.dropdown}>
-                    <Link href="/Profile" style={styles.dropdownItem}>
-                        <Text style={styles.dropdownText}>Profile</Text>
-                    </Link>
-                    <Link href="/Analytics" style={styles.dropdownItem}>
-                        <Text style={styles.dropdownText}>Analytics</Text>
-                    </Link>
-                    <Link href="/Settings" style={styles.dropdownItem}>
-                        <Text style={styles.dropdownText}>Settings</Text>
-                    </Link>
-                    <Link href="/Support" style={styles.dropdownItem}>
-                        <Text style={styles.dropdownText}>Support</Text>
-                    </Link>
-                </View>
-            )}
-        </View>
+                {menuVisible && (
+                    <View style={styles.dropdown}>
+                        <TouchableOpacity style={styles.dropdownItem} onPress={() => handleMenuItemPress('Profile')}>
+                            <Text style={styles.dropdownText}>Profile</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.dropdownItem} onPress={() => handleMenuItemPress('Settings')}>
+                            <Text style={styles.dropdownText}>Settings</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.dropdownItem} onPress={() => handleMenuItemPress('Support')}>
+                            <Text style={styles.dropdownText}>Support</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
+            </ScrollView>
+        </LinearGradient>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    gradientContainer: {
         flex: 1,
+    },
+    container: {
+        flexGrow: 1,
         justifyContent: 'center',
-        backgroundColor: '#4b0082',
         alignItems: 'center',
         padding: 20,
     },
-    welcomeText: {
-        fontSize: 40,
-        fontWeight: 'bold',
-        color: '#cbc3e3',
+    logo: {
+        bottom: 90,
+        textAlign: 'center',
+        width: 200,
+        height: 200,
         marginBottom: 20,
     },
-    logo: {
-        position: 'absolute',
-        top: 30,
-        left: -25,
-        margin: 10,
-        height: 50,
+    welcomeText: {
+        fontSize: 32,
+        color: '#cbc3e3',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 40,
     },
-    cardContainer: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
+    buttonContainer: {
+        borderRadius: 8,
         marginBottom: 30,
-        position: 'absolute',
-        right: 20,
-        top: 10,
+        width: 200,
+        alignItems: 'center',
     },
-    menu: {
+    buttonBackground: {
+        paddingVertical: 15,
+        paddingHorizontal: 40,
+        borderRadius: 8,
+        width: '100%',
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    menuButton: {
+        position: 'absolute',
+        top: 55,
+        right: 10,
         padding: 10,
-        top: 40,
-        left: 100,
+        borderRadius: 50,
     },
     dropdown: {
         position: 'absolute',
-        top: 90,
-        right: 50,
+        top: 100,
+        right: 20,
         backgroundColor: '#fff',
-        borderRadius: 10,
+        borderRadius: 8,
         elevation: 3,
-        width: 100,
-        padding: 10,
+        width: 120,
+        paddingVertical: 10,
     },
     dropdownItem: {
         padding: 10,
@@ -104,18 +164,29 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
-    buttonContainer: {
+    activityButton: {
+        marginTop: 20,
         backgroundColor: '#cc00cc',
-        borderRadius: 5,
         padding: 10,
-        marginLeft: 10,
-        top: 100,
-        width: 80,
+        borderRadius: 8,
+        width: 200,
+        alignItems: 'center',
     },
-    buttonText: {
+    activityButtonText: {
         color: '#fff',
+        fontSize: 16,
         fontWeight: 'bold',
-        textAlign: 'center',
+    },
+    recentActivity: {
+        backgroundColor: '#cbc3e3',
+        borderRadius: 10,
+        padding: 15,
+        marginTop: 20,
+        alignItems: 'center',
+    },
+    activityText: {
+        color: '#4b0082',
         fontSize: 14,
+        marginBottom: 5,
     },
 });

@@ -9,7 +9,7 @@ const validateEmail = (email) => {
 };
 
 export default function LoginScreen({ navigation }) {
-  const { users } = useContext(UserContext);
+  const { users, setCurrentUser } = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false); 
@@ -25,8 +25,9 @@ export default function LoginScreen({ navigation }) {
     } else {
       const user = users.find(user => user.email === email && user.password === password);
       if (user) {
+        setCurrentUser(user);
         setMessage('Login successful!');
-        navigation.navigate('GetStarted'); // Navigate to GetStarted screen
+        navigation.navigate('Timer');  // Navigate to Timer after successful login
       } else {
         setMessage('Invalid email or password.');
       }
