@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Image } from 'react-native';
 import { UserContext } from './UserContext';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { FIREBASE_AUTH } from 'FirebaseConfig'; 
+import { FIREBASE_AUTH } from './FirebaseConfig'; 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const validateEmail = (email) => {

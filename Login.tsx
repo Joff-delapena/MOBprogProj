@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Linking, ActivityIndicator, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { FIREBASE_AUTH,} from 'FirebaseConfig';
+import { FIREBASE_AUTH,} from './FirebaseConfig';
 
 const validateEmail = (email) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -18,7 +18,7 @@ export default function LoginScreen({ navigation }) {
   const auth = FIREBASE_AUTH;
 
   const handleLogin = async () => {
-    Keyboard.dismiss(); // Dismiss the keyboard
+    Keyboard.dismiss(); 
     if (!email || !password) {
       setMessage('Please fill in all fields.');
     } else if (!validateEmail(email)) {
@@ -26,7 +26,7 @@ export default function LoginScreen({ navigation }) {
     } else if (password.length < 8) {
       setMessage('Password must be at least 8 characters long.');
     } else {
-      setLoading(true); // Start loading
+      setLoading(true);
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -42,7 +42,7 @@ export default function LoginScreen({ navigation }) {
           setMessage('Login failed. Please try again.');
         }
       } finally {
-        setLoading(false); // Stop loading
+        setLoading(false);
       }
     }
   };
@@ -104,7 +104,7 @@ export default function LoginScreen({ navigation }) {
 
       <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
         {loading ? (
-          <ActivityIndicator size="small" color="#FFF" /> // Show loading indicator
+          <ActivityIndicator size="small" color="#FFF" />
         ) : (
           <Text style={styles.buttonText}>Login</Text>
         )}
