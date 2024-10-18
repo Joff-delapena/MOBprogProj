@@ -1,7 +1,8 @@
-import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Linking } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Linking, ActivityIndicator, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { UserContext } from './UserContext';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { FIREBASE_AUTH,} from 'FirebaseConfig';
 
 const validateEmail = (email) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -9,13 +10,15 @@ const validateEmail = (email) => {
 };
 
 export default function LoginScreen({ navigation }) {
-  const { users } = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const auth = FIREBASE_AUTH;
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    Keyboard.dismiss(); // Dismiss the keyboard
     if (!email || !password) {
       setMessage('Please fill in all fields.');
     } else if (!validateEmail(email)) {
@@ -23,11 +26,23 @@ export default function LoginScreen({ navigation }) {
     } else if (password.length < 8) {
       setMessage('Password must be at least 8 characters long.');
     } else {
-      const user = users.find(user => user.email === email && user.password === password);
-      if (user) {
-        navigation.navigate('Homepage'); 
-      } else {
-        setMessage('Invalid email or password.');
+      setLoading(true); // Start loading
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        setMessage('Login successful!');
+        navigation.navigate('Homepage');
+      } catch (error) {
+        console.error(error);
+        if (error.code === 'auth/user-not-found') {
+          setMessage('User not found. Please register first.');
+        } else if (error.code === 'auth/wrong-password') {
+          setMessage('Incorrect password. Please try again.');
+        } else {
+          setMessage('Login failed. Please try again.');
+        }
+      } finally {
+        setLoading(false); // Stop loading
       }
     }
   };
@@ -49,7 +64,7 @@ export default function LoginScreen({ navigation }) {
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
-  }; 
+  };
 
   return (
     <View style={styles.container}>
@@ -66,6 +81,7 @@ export default function LoginScreen({ navigation }) {
         onChangeText={setEmail} 
         keyboardType="email-address" 
         placeholderTextColor="#A9A9A9"  
+        accessibilityLabel="Email input"
       />
       <View style={styles.passwordContainer}>
         <TextInput 
@@ -75,6 +91,7 @@ export default function LoginScreen({ navigation }) {
           onChangeText={setPassword} 
           secureTextEntry={!showPassword} 
           placeholderTextColor="#A9A9A9"  
+          accessibilityLabel="Password input"
         />
         <TouchableOpacity onPress={togglePasswordVisibility} style={styles.eyeButton}>
           <Icon 
@@ -85,14 +102,20 @@ export default function LoginScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
+        {loading ? (
+          <ActivityIndicator size="small" color="#FFF" /> // Show loading indicator
+        ) : (
+          <Text style={styles.buttonText}>Login</Text>
+        )}
       </TouchableOpacity>
+
       {message ? (
         <Text style={message.includes('successful') ? styles.successMessage : styles.errorMessage}>
           {message}
         </Text>
       ) : null}
+
       <View style={styles.link}>
         <Text style={styles.linkText}>
           Don't have an account?{' '}
@@ -101,6 +124,7 @@ export default function LoginScreen({ navigation }) {
           <Text style={styles.linkTextBlue}>Sign Up</Text>
         </TouchableOpacity>
       </View>
+
       <View style={styles.cardContainer}>
         <TouchableOpacity style={styles.card} onPress={handleFacebookLogin}>
           <Image

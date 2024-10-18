@@ -2,6 +2,8 @@ import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Image } from 'react-native';
 import { UserContext } from './UserContext';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { FIREBASE_AUTH } from 'FirebaseConfig'; 
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const validateEmail = (email) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;  
@@ -30,7 +32,7 @@ export default function RegisterScreen({ navigation }) {
     { label: 'Female', value: 'Female', icon: () => <Image source={require('./assets/female_icon.png')} style={styles.genderIcon} /> },
   ]);
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!fullname || !email || !password || !confirmPassword || !terms || !countryValue || !genderValue) {
       setMessage('Please fill in all fields and agree to the terms.');
     } else if (!validateEmail(email)) {
@@ -40,11 +42,17 @@ export default function RegisterScreen({ navigation }) {
     } else if (password !== confirmPassword) {
       setMessage('Passwords do not match, please try again.');
     } else {
-      addUser({ fullname, email, password, country: countryValue, gender: genderValue });
-      setMessage('Registration successful!');
-      setTimeout(() => {
-        navigation.navigate('Login');
-      }, 1500);
+      try {
+
+        await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
+        addUser({ fullname, email, password, country: countryValue, gender: genderValue });
+        setMessage('Registration successful!');
+        setTimeout(() => {
+          navigation.navigate('Login');
+        }, 1500);
+      } catch (error) {
+        setMessage(error.message);
+      }
     }
   };
 
@@ -149,86 +157,80 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
-    backgroundColor: '#00001A'
+    backgroundColor: '#fff',
   },
   logo: {
-    position: 'static',
-    bottom: 60,
-    right: 320,
-    margin: 10,
-    height: 60,
+    width: '100%',
+    height: 200,
   },
   header: {
-    fontSize: 40,
+    fontSize: 24,
+    marginBottom: 20,
     fontWeight: 'bold',
-    marginBottom: 50,
-    textAlign: 'center',
-    color: '#FFF'
   },
   input: {
+    height: 50,
+    width: '100%',
+    borderColor: '#ccc',
     borderWidth: 1,
-    borderColor: '#CCC',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 15,
-    color: '#fff',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginBottom: 10,
   },
-  button: {
-    backgroundColor: '#cc00cc',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
+  dropDown: {
+    height: 50,
+    width: '100%',
+    borderRadius: 8,
+    borderColor: '#ccc',
+    marginBottom: 10,
   },
-  buttonText: {
-    color: '#FFF',
+  dropDownContainer: {
+    borderColor: '#ccc',
+  },
+  dropDownText: {
     fontSize: 16,
-    fontWeight: 'bold',
   },
-  successMessage: {
-    color: '#008000',
-    textAlign: 'center',
-  },
-  errorMessage: {
-    color: '#DC3545',
-    textAlign: 'center',
+  dropDownArrow: {
+    width: 20,
+    height: 20,
   },
   termsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 20,
   },
   switch: {
     marginRight: 10,
-  },      
+  },
   termsText: {
     fontSize: 16,
-    color: '#009688',
   },
-  dropDown: {
-    backgroundColor: '#00001a',
-    borderColor: '#A9A9A9',
-    borderRadius: 5,
-    marginBottom: 15,
+  button: {
+    backgroundColor: '#4b0082',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
   },
-  dropDownContainer: {
-    backgroundColor: '#00001a',
-    borderColor: '#A9A9A9',
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
   },
-  dropDownText: {
-    color: '#A9A9A9',
+  errorMessage: {
+    color: 'red',
+    marginTop: 10,
   },
-  dropDownArrow: {
-    tintColor: '#cc00cc',
+  successMessage: {
+    color: 'green',
+    marginTop: 10,
   },
   flagIcon: {
     width: 20,
-    height:10,
-    marginRight: 5,
+    height: 20,
   },
   genderIcon: {
-    width: 10, 
-    height: 10, 
-    marginRight: 5,
+    width: 20,
+    height: 20,
   },
-});   
+});

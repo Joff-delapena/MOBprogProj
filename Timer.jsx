@@ -5,6 +5,7 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+
 const Timer = ({ navigation, route }) => {
     const [seconds, setSeconds] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
