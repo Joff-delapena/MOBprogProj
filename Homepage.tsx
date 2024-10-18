@@ -1,98 +1,88 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useFocusEffect } from '@react-navigation/native';
-import { LinearGradient } from 'expo-linear-gradient'; 
+import { LinearGradient } from 'expo-linear-gradient';
+import Swiper from 'react-native-swiper';
+
+const image1 = require('./assets/Track screen time.png');
+const image2 = require('./assets/Goals.png');
+const image3 = require('./assets/reminder.png');
 
 export default function Homepage({ navigation, route }) {
-    const [menuVisible, setMenuVisible] = useState(false);
-    const [activityVisible, setActivityVisible] = useState(false);
+    const [goals, setGoals] = useState([]);
 
-    const [lastTimer, setLastTimer] = useState(0);
-    const [lastSession, setLastSession] = useState('No sessions yet');
-    const [appUsageReduced, setAppUsageReduced] = useState(0);
-
-    const toggleMenu = () => {
-        setMenuVisible(!menuVisible);
+    const handleAddGoal = (goal) => {
+        setGoals((prevGoals) => [...prevGoals, goal]);
     };
-
-    const toggleActivity = () => {
-        setActivityVisible(!activityVisible);
-    };
-
-    const handleMenuItemPress = (screen) => {
-        navigation.navigate(screen);
-        setMenuVisible(false);
-    };
-
-    useFocusEffect(
-        React.useCallback(() => {
-            if (route.params?.lastTimer) {
-                setLastTimer(route.params.lastTimer);
-                setLastSession(route.params.lastSession || 'No sessions yet');
-                setAppUsageReduced(route.params.appUsageReduced || 0);
-            }
-        }, [route.params])
-    );
 
     return (
-        <LinearGradient
-            colors={['#6a0dad', '#4b0082', '#2b0042']} 
-            style={styles.gradientContainer}
-        >
+        <LinearGradient colors={['#6a0dad', '#4b0082', '#2b0042']} style={styles.gradientContainer}>
             <ScrollView contentContainerStyle={styles.container}>
-                <Image
-                    source={require('./assets/ASPA.png')}
-                    style={styles.logo}
-                    resizeMode="contain"
-                />
-
-                <Text style={styles.welcomeText}>Welcome to Aspa</Text>
-
-                <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Timer')}>
-                    <LinearGradient colors={['#cc00cc', '#a900a9']} style={styles.buttonBackground}>
-                        <Text style={styles.buttonText}>Start Preventer</Text>
-                    </LinearGradient>
+                <TouchableOpacity style={styles.aboutButton} onPress={() => navigation.navigate('About')}>
+                    <Ionicons name="information-circle-outline" size={20} color="#fff" />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.activityButton} onPress={toggleActivity}>
-                    <Text style={styles.activityButtonText}>
-                        {activityVisible ? 'Hide Recent Activity' : 'Show Recent Activity'}
-                    </Text>
+                <Image source={require('./assets/ASPAbg.png')} style={styles.logo} resizeMode="contain" />
+
+                <View style={styles.swiperContainer}>
+                    <Swiper
+                        style={styles.wrapper}
+                        showsButtons={true}
+                        dot={<View style={styles.dot} />}
+                        activeDot={<View style={styles.activeDot} />}
+                        autoplay={true}
+                        autoplayTimeout={3}
+                    >
+                        <View style={styles.slide}>
+                            <Image source={require('./assets/Track screen time.png')} style={styles.slideImage} resizeMode="cover" />
+                            <View style={styles.overlay} />
+                            <Text style={styles.slideText}>Track Screen Time</Text>
+                        </View>
+                        
+                        <View style={styles.slide}>
+                            <Image source={require('./assets/Goals.png')} style={styles.slideImage} resizeMode="cover" />
+                            <View style={styles.overlay} />
+                            <Text style={styles.slideText}>Set Goals</Text>
+                        </View>
+                        <View style={styles.slide}>
+                            <Image source={require('./assets/reminder.png')} style={styles.slideImage} resizeMode="cover" />
+                            <View style={styles.overlay} />
+                            <Text style={styles.slideText}>Get Reminders</Text>
+                        </View>
+                    </Swiper>
+                </View>
+
+                <TouchableOpacity style={styles.goalsButton} onPress={() => navigation.navigate('DailyGoals', { onAddGoal: handleAddGoal })}>
+                    <Text style={styles.goalsButtonText}>Manage Time</Text>
                 </TouchableOpacity>
-
-                {activityVisible && (
-                    <View style={styles.recentActivity}>
-                        {lastTimer > 0 ? (
-                            <>
-                                <Text style={styles.activityText}>Last Timer: {lastTimer} minutes</Text>
-                                <Text style={styles.activityText}>Last Session: {lastSession}</Text>
-                                <Text style={styles.activityText}>App Usage Reduced: {appUsageReduced}%</Text>
-                            </>
-                        ) : (
-                            <Text style={styles.activityText}>No recent activity.</Text>
-                        )}
-                    </View>
-                )}
-
-                <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
-                    <Ionicons name="menu-outline" size={30} color="#fff" />
-                </TouchableOpacity>
-
-                {menuVisible && (
-                    <View style={styles.dropdown}>
-                        <TouchableOpacity style={styles.dropdownItem} onPress={() => handleMenuItemPress('Profile')}>
-                            <Text style={styles.dropdownText}>Profile</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.dropdownItem} onPress={() => handleMenuItemPress('Settings')}>
-                            <Text style={styles.dropdownText}>Settings</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.dropdownItem} onPress={() => handleMenuItemPress('Support')}>
-                            <Text style={styles.dropdownText}>Support</Text>
-                        </TouchableOpacity>
-                    </View>
-                )}
             </ScrollView>
+
+            <View style={styles.bottomNavigation}>
+                <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Homepage')}>
+                    <Ionicons name="home-outline" size={24} color="#fff" />
+                    <Text style={styles.navText}>Home</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Support')}>
+                    <Ionicons name="help-circle-outline" size={24} color="#fff" />
+                    <Text style={styles.navText}>Support</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Timer', { goals })}>
+                    <Ionicons name="timer-outline" size={24} color="#fff" />
+                    <Text style={styles.navText}>Timer</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Settings')}>
+                    <Ionicons name="settings-outline" size={24} color="#fff" />
+                    <Text style={styles.navText}>Settings</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Profile')}>
+                    <Ionicons name="person-outline" size={24} color="#fff" />
+                    <Text style={styles.navText}>Profile</Text>
+                </TouchableOpacity>
+            </View>
         </LinearGradient>
     );
 }
@@ -106,87 +96,101 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
+        paddingBottom: 30,
+    },
+    aboutButton: {
+        alignSelf: 'flex-start',
+        marginBottom: 20,
+        left: 310,
+        bottom: 70
     },
     logo: {
-        bottom: 90,
         textAlign: 'center',
-        width: 200,
-        height: 200,
-        marginBottom: 20,
-    },
-    welcomeText: {
-        fontSize: 32,
-        color: '#cbc3e3',
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 40,
-    },
-    buttonContainer: {
-        borderRadius: 8,
-        marginBottom: 30,
-        width: 200,
-        alignItems: 'center',
-    },
-    buttonBackground: {
-        paddingVertical: 15,
-        paddingHorizontal: 40,
-        borderRadius: 8,
-        width: '100%',
-        alignItems: 'center',
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    menuButton: {
-        position: 'absolute',
-        top: 55,
+        width: 250,
+        height: 180,
+        bottom: 100,
         right: 10,
-        padding: 10,
-        borderRadius: 50,
     },
-    dropdown: {
+    swiperContainer: {
+        height: 200,
+        width: '100%',
+        marginTop: 100,
+        bottom: 200,
+    },
+    wrapper: {
+        height: '100%',
+    },
+    slide: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(000,000,000,.5)',
+    },
+    slideText: {
         position: 'absolute',
-        top: 100,
-        right: 20,
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        elevation: 3,
-        width: 120,
-        paddingVertical: 10,
-    },
-    dropdownItem: {
-        padding: 10,
-    },
-    dropdownText: {
-        color: '#4b0082',
+        color: '#fff',
+        fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
+        bottom: 80,
     },
-    activityButton: {
-        marginTop: 20,
+    slideImage: {
+        width: '100%', 
+        height: '100%', 
+    },
+    overlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    },
+    dot: {
+        backgroundColor: 'rgba(255,255,255,.5)',
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        marginLeft: 3,
+        marginRight: 3,
+        top: 20
+    },
+    activeDot: {
+        backgroundColor: '#fff',
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        marginLeft: 3,
+        marginRight: 3,
+        top: 20
+    },
+    bottomNavigation: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        backgroundColor: '#4b0082',
+        paddingVertical: 5,
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+    },
+    navItem: {
+        alignItems: 'center',
+    },
+    navText: {
+        color: '#fff',
+        fontSize: 10,
+    },
+    goalsButton: {
         backgroundColor: '#cc00cc',
         padding: 10,
-        borderRadius: 8,
-        width: 200,
-        alignItems: 'center',
-    },
-    activityButtonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    recentActivity: {
-        backgroundColor: '#cbc3e3',
-        borderRadius: 10,
-        padding: 15,
+        borderRadius: 5,
         marginTop: 20,
-        alignItems: 'center',
+        bottom: 90
     },
-    activityText: {
-        color: '#4b0082',
-        fontSize: 14,
-        marginBottom: 5,
+    goalsButtonText: {
+        color: '#fff',
+        fontSize: 18,
     },
 });

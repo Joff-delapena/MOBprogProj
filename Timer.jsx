@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert } from 'react-native';
+import React, { useState, useEffect, useMemo } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, FlatList } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { LinearGradient } from 'expo-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const Timer = ({ navigation }) => {
+const Timer = ({ navigation, route }) => {
     const [seconds, setSeconds] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
     const [inputHours, setInputHours] = useState('');
     const [inputMinutes, setInputMinutes] = useState('');
     const [inputSeconds, setInputSeconds] = useState('');
+    const [selectedGoals, setSelectedGoals] = useState([]);
 
     useEffect(() => {
         const requestPermissions = async () => {
@@ -44,6 +46,12 @@ const Timer = ({ navigation }) => {
             subscription.remove();
         };
     }, [isRunning, seconds]);
+
+    useEffect(() => {
+        if (route.params?.selectedGoals) {
+            setSelectedGoals(route.params.selectedGoals);
+        }
+    }, [route.params?.selectedGoals]);
 
     const handleTimeUp = async () => {
         setIsRunning(false);
@@ -104,36 +112,37 @@ const Timer = ({ navigation }) => {
         return `${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
     };
 
-    const totalDuration = (parseInt(inputHours) || 0) * 3600 +
-                          (parseInt(inputMinutes) || 0) * 60 +
-                          (parseInt(inputSeconds) || 0);
+    const totalDuration = useMemo(() => {
+        return (parseInt(inputHours) || 0) * 3600 +
+            (parseInt(inputMinutes) || 0) * 60 +
+            (parseInt(inputSeconds) || 0);
+    }, [inputHours, inputMinutes, inputSeconds]);
 
-    const progressPercentage = totalDuration > 0 ? (seconds / totalDuration) * 100 : 0;
-    const progressColor = '#cc00cc'; 
+    const progressPercentage = useMemo(() => {
+        return totalDuration > 0 ? (seconds / totalDuration) * 100 : 0;
+    }, [totalDuration, seconds]);
 
     return (
         <LinearGradient
             colors={['#6a0dad', '#4b0082', '#2b0042']}
             style={styles.container}
         >
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                <Text style={styles.backButtonText}>Back</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Homepage')} style={styles.backButton}>
+                <Icon name="home" size={18} color="#fff" />
             </TouchableOpacity>
 
             <AnimatedCircularProgress
                 size={240}
                 width={16}
                 fill={progressPercentage}
-                tintColor={progressColor}  
-                backgroundColor="#cbc3e3" 
+                tintColor="#cc00cc"
+                backgroundColor="#cbc3e3"
                 lineCap="round"
                 rotation={0}
             >
-                {
-                    () => (
-                        <Text style={styles.timerText}>{formatTime(seconds)}</Text>
-                    )
-                }
+                {() => (
+                    <Text style={styles.timerText}>{formatTime(seconds)}</Text>
+                )}
             </AnimatedCircularProgress>
 
             <View style={styles.inputContainer}>
@@ -165,17 +174,35 @@ const Timer = ({ navigation }) => {
                     editable={!isRunning}
                 />
             </View>
+
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.button} onPress={startTimer}>
                     <LinearGradient colors={['#cc00cc', '#a900a9']} style={styles.buttonBackground}>
                         <Text style={styles.buttonText}>Start</Text>
                     </LinearGradient>
                 </TouchableOpacity>
+
                 <TouchableOpacity style={styles.button} onPress={resetTimer}>
                     <LinearGradient colors={['#cc00cc', '#a900a9']} style={styles.buttonBackground}>
                         <Text style={styles.buttonText}>Reset</Text>
                     </LinearGradient>
                 </TouchableOpacity>
+            </View>
+
+            <View style={styles.goalsContainer}>
+                <Text style={styles.goalsHeading}>Your Selected Goals</Text>
+                {selectedGoals.length > 0 ? (
+                    <FlatList
+                        data={selectedGoals}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item }) => (
+                            <Text style={styles.goalText}>{item}</Text>
+                        )}
+                        style={styles.goalsList}
+                    />
+                ) : (
+                    <Text style={styles.noGoalsText}>No goals selected.</Text>
+                )}
             </View>
         </LinearGradient>
     );
@@ -186,16 +213,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 20,
     },
     backButton: {
         position: 'absolute',
         top: 50,
-        left: 25,
-    },
-    backButtonText: {
-        color: '#cbc3e3',
-        fontSize: 18,
-    },
+        right: 15    },
     timerText: {
         fontSize: 48,
         color: '#fff',
@@ -211,34 +234,56 @@ const styles = StyleSheet.create({
         height: 50,
         borderColor: '#cbc3e3',
         borderWidth: 1,
+        borderRadius: 5,
         color: '#fff',
-        width: '30%',
         textAlign: 'center',
-        fontSize: 18,
-        borderRadius: 8,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',  
+        width: '30%',
+        backgroundColor: '#4b0082',
     },
     buttonContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '80%',
-        marginTop: 20,
+        justifyContent: 'space-around',
+        width: '60%',
+        marginBottom: 20,
     },
     button: {
-        flex: 1,
-        marginHorizontal: 10,
-        borderRadius: 8,
-        overflow: 'hidden', 
+        width: '45%',
+        borderRadius: 5,
+        overflow: 'hidden',
     },
     buttonBackground: {
-        paddingVertical: 15,
-        borderRadius: 8,
+        padding: 15,
+        alignItems: 'center',
+        borderRadius: 5,
     },
     buttonText: {
         color: '#fff',
         fontSize: 18,
-        fontWeight: 'bold',
-        textAlign: 'center',
+    },
+    goalsContainer: {
+        marginTop: 20,
+        width: '100%',
+        alignItems: 'center',
+    },
+    goalsHeading: {
+        fontSize: 24,
+        color: '#fff',
+        marginBottom: 10,
+    },
+    goalsList: {
+        width: '100%',
+        maxHeight: 150,
+    },
+    goalText: {
+        color: '#fff',
+        fontSize: 16,
+        marginVertical: 5,
+        padding: 10,
+        backgroundColor: '#6a0dad',
+        borderRadius: 5,
+    },
+    noGoalsText: {
+        color: '#ccc',
     },
 });
 

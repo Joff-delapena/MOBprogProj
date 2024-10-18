@@ -59,7 +59,7 @@ export default function RegisterScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Image 
-        source={require('./assets/ASPA.png')} 
+        source={require('./assets/ASPAbg.png')} 
         style={styles.logo}
         resizeMode="contain"
       />
@@ -154,10 +154,10 @@ const styles = StyleSheet.create({
   },
   logo: {
     position: 'static',
-    top: -50,
-    left: -45,
+    bottom: 60,
+    right: 320,
     margin: 10,
-    height: 50,
+    height: 60,
   },
   header: {
     fontSize: 40,

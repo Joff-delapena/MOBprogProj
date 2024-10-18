@@ -25,8 +25,7 @@ export default function LoginScreen({ navigation }) {
     } else {
       const user = users.find(user => user.email === email && user.password === password);
       if (user) {
-        setMessage('Login successful!');
-        navigation.navigate('GetStarted'); 
+        navigation.navigate('Homepage'); 
       } else {
         setMessage('Invalid email or password.');
       }
@@ -55,7 +54,7 @@ export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Image 
-        source={require('./assets/ASPA.png')} 
+        source={require('./assets/ASPAbg.png')} 
         style={styles.logo}
         resizeMode="contain"
       />
@@ -144,9 +143,9 @@ const styles = StyleSheet.create({
   logo: {
     position: 'absolute',
     top: 10,
-    left: -25,
+    right: -30,
     margin: 10,
-    height: 50,
+    height: 60,
   },
   header: {
     fontSize: 36,

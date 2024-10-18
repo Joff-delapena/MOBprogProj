@@ -12,7 +12,7 @@ const LoadingScreen = ({ navigation }) => {
     }).start();
 
     const timer = setTimeout(() => {
-      navigation.navigate('Login'); 
+      navigation.navigate('GetStarted'); 
     }, 7000);
 
     return () => clearTimeout(timer);
@@ -21,13 +21,10 @@ const LoadingScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Animated.Image
-        source={require('./assets/ASPA.png')}
+        source={require('./assets/ASPAbg.png')}
         style={[styles.logo, { opacity }]}
         resizeMode="contain"
       />
-      <Animated.Text style={[styles.loadingText, { opacity }]}>
-        Loading...
-      </Animated.Text>
     </View>
   );
 }
@@ -40,19 +37,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#00001A',
   },
   logo: {
-    height: 100,
-    width: 250,
+    height: 200,
+    width: 300,
     marginBottom: 20,
     alignItems: 'center',
     bottom: 20,
     left: 0,
-  },
-  loadingText: {
-    textAlign: 'center',
-    left: 10,
-    bottom: 60,
-    fontSize: 18,
-    color: '#555',
   },
 });
 
