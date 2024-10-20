@@ -12,7 +12,7 @@ import About from './About';
 import Profile from './Profile';   
 import Settings from './Settings';
 import Support from './Support'
-import DailyGoals from './DailyGoals'  
+import DailyGoals from './DailyGoals'
 
 
 

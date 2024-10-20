@@ -159,16 +159,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#00001A',
   },
   logo: {
     width: '100%',
     height: 200,
   },
   header: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontSize: 30,
+    marginBottom: 30,
     fontWeight: 'bold',
+    color: '#fff'
   },
   input: {
     height: 50,
@@ -178,6 +179,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 10,
     marginBottom: 10,
+    color: '#fff'
   },
   dropDown: {
     height: 50,
@@ -185,12 +187,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: '#ccc',
     marginBottom: 10,
+    backgroundColor: '#00001A'
   },
   dropDownContainer: {
     borderColor: '#ccc',
+    backgroundColor: '#00001A'
   },
   dropDownText: {
     fontSize: 16,
+    color: '#fff'
   },
   dropDownArrow: {
     width: 20,
@@ -203,12 +208,15 @@ const styles = StyleSheet.create({
   },
   switch: {
     marginRight: 10,
+    right: 20
   },
   termsText: {
     fontSize: 16,
+    color: 'green',
+    right: 30
   },
   button: {
-    backgroundColor: '#4b0082',
+    backgroundColor: '#cc00cc',
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,

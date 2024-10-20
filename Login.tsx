@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Linking, ActivityIndicator, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { FIREBASE_AUTH,} from './FirebaseConfig';
+import { FIREBASE_AUTH } from './FirebaseConfig';
 
 const validateEmail = (email) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -57,100 +57,92 @@ export default function LoginScreen({ navigation }) {
     Linking.openURL(googleLoginUrl).catch(err => console.error('An error occurred', err));
   };
 
-  const handleInstagramLogin = () => {
-    const instagramLoginUrl = 'https://www.instagram.com/accounts/login';
-    Linking.openURL(instagramLoginUrl).catch(err => console.error('An error occurred', err));
-  };
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
   return (
     <View style={styles.container}>
-      <Image 
-        source={require('./assets/ASPAbg.png')} 
-        style={styles.logo}
-        resizeMode="contain"
-      />
-      <Text style={styles.header}>Login</Text>
-      <TextInput 
-        style={styles.input} 
-        placeholder="Email" 
-        value={email} 
-        onChangeText={setEmail} 
-        keyboardType="email-address" 
-        placeholderTextColor="#A9A9A9"  
-        accessibilityLabel="Email input"
-      />
-      <View style={styles.passwordContainer}>
-        <TextInput 
-          style={styles.passwordInput} 
-          placeholder="Password" 
-          value={password} 
-          onChangeText={setPassword} 
-          secureTextEntry={!showPassword} 
-          placeholderTextColor="#A9A9A9"  
-          accessibilityLabel="Password input"
-        />
-        <TouchableOpacity onPress={togglePasswordVisibility} style={styles.eyeButton}>
-          <Icon 
-            name={showPassword ? 'visibility-off' : 'visibility'} 
-            size={20} 
-            color="#A9A9A9" 
-          />
-        </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-        {loading ? (
-          <ActivityIndicator size="small" color="#FFF" />
-        ) : (
-          <Text style={styles.buttonText}>Login</Text>
-        )}
-      </TouchableOpacity>
-
-      {message ? (
-        <Text style={message.includes('successful') ? styles.successMessage : styles.errorMessage}>
-          {message}
-        </Text>
-      ) : null}
-
-      <View style={styles.link}>
-        <Text style={styles.linkText}>
-          Don't have an account?{' '}
-        </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-          <Text style={styles.linkTextBlue}>Sign Up</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.cardContainer}>
-        <TouchableOpacity style={styles.card} onPress={handleFacebookLogin}>
-          <Image
-            source={require('./assets/Facebook.png')}
-            style={styles.facebookIcon}
+      {loading ? (
+        <View style={styles.loadingScreen}>
+          <ActivityIndicator size="large" color="#FFF" />
+          <Text style={styles.loadingText}>Logging in...</Text>
+        </View>
+      ) : (
+        <>
+          <Image 
+            source={require('./assets/ASPAbg.png')} 
+            style={styles.logo}
             resizeMode="contain"
           />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.card} onPress={handleGoogleLogin}>
-          <Image
-            source={require('./assets/google.png')} 
-            style={styles.googleIcon}
-            resizeMode="contain"
+          <Text style={styles.header}>Login</Text>
+          <TextInput 
+            style={styles.input} 
+            placeholder="Email" 
+            value={email} 
+            onChangeText={setEmail} 
+            keyboardType="email-address" 
+            placeholderTextColor="#A9A9A9"  
+            accessibilityLabel="Email input"
           />
-        </TouchableOpacity>
+          <View style={styles.passwordContainer}>
+            <TextInput 
+              style={styles.passwordInput} 
+              placeholder="Password" 
+              value={password} 
+              onChangeText={setPassword} 
+              secureTextEntry={!showPassword} 
+              placeholderTextColor="#A9A9A9"  
+              accessibilityLabel="Password input"
+            />
+            <TouchableOpacity onPress={togglePasswordVisibility} style={styles.eyeButton}>
+              <Icon 
+                name={showPassword ? 'visibility-off' : 'visibility'} 
+                size={20} 
+                color="#A9A9A9" 
+              />
+            </TouchableOpacity>
+          </View>
 
-        <TouchableOpacity style={styles.card} onPress={handleInstagramLogin}>
-          <Image
-            source={require('./assets/ig.png')} 
-            style={styles.igIcon}
-            resizeMode="contain"
-          />  
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.statusText}>Or sign in with</Text>
+          <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+
+          {message ? (
+            <Text style={message.includes('successful') ? styles.successMessage : styles.errorMessage}>
+              {message}
+            </Text>
+          ) : null}
+
+          <View style={styles.link}>
+            <Text style={styles.linkText}>
+              Don't have an account?{' '}
+            </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+              <Text style={styles.linkTextBlue}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.cardContainer}>
+            <TouchableOpacity style={styles.card} onPress={handleFacebookLogin}>
+              <Image
+                source={require('./assets/Facebook.png')}
+                style={styles.facebookIcon}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.card} onPress={handleGoogleLogin}>
+              <Image
+                source={require('./assets/google.png')} 
+                style={styles.googleIcon}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.statusText}>Or sign in with</Text>
+        </>
+      )}
     </View>
   );
 }
@@ -163,6 +155,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#00001A', 
     borderRadius: 10, 
     color: '#fff',
+  },
+  loadingScreen: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    color: '#FFF',
+    marginTop: 10,
+    fontSize: 16,
   },
   logo: {
     position: 'absolute',
@@ -259,12 +261,6 @@ const styles = StyleSheet.create({
     height: 30,
     top: 110,
     right: 60,         
-  },
-  igIcon: {
-    width: 30,
-    height: 30,
-    top: 110,
-    right: 140,
   },
   statusText: {
     fontSize: 20,

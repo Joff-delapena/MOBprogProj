@@ -8,7 +8,7 @@ const image1 = require('./assets/Track screen time.png');
 const image2 = require('./assets/Goals.png');
 const image3 = require('./assets/reminder.png');
 
-export default function Homepage({ navigation, route }) {
+export default function Homepage({ navigation,}) {
     const [goals, setGoals] = useState([]);
 
     const handleAddGoal = (goal) => {
