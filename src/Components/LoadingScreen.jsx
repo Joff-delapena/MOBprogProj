@@ -21,7 +21,7 @@ const LoadingScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Animated.Image
-        source={require('./assets/ASPAbg.png')}
+        source={require('../../src/assets/ASPAbg.png')}
         style={[styles.logo, { opacity }]}
         resizeMode="contain"
       />

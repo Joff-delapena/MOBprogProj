@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Image } from 'react-native';
 import { UserContext } from './UserContext';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { FIREBASE_AUTH } from './FirebaseConfig'; 
+import { FIREBASE_AUTH } from '../../src/Database/FirebaseConfig'; 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const validateEmail = (email) => {
@@ -21,15 +21,15 @@ export default function RegisterScreen({ navigation }) {
   const [countryOpen, setCountryOpen] = useState(false);
   const [countryValue, setCountryValue] = useState('');
   const [countryItems, setCountryItems] = useState([
-    { label: 'Philippines', value: 'Philippines', icon: () => <Image source={require('./assets/ph.png')} style={styles.flagIcon} /> },
-    { label: 'USA', value: 'USA', icon: () => <Image source={require('./assets/us.png')} style={styles.flagIcon} /> },
-    { label: 'Japan', value: 'Japan', icon: () => <Image source={require('./assets/jp.png')} style={styles.flagIcon} /> },
+    { label: 'Philippines', value: 'Philippines', icon: () => <Image source={require('../../src/assets/ph.png')} style={styles.flagIcon} /> },
+    { label: 'USA', value: 'USA', icon: () => <Image source={require('../../src/assets/us.png')} style={styles.flagIcon} /> },
+    { label: 'Japan', value: 'Japan', icon: () => <Image source={require('../../src/assets/jp.png')} style={styles.flagIcon} /> },
   ]);
   const [genderOpen, setGenderOpen] = useState(false);
   const [genderValue, setGenderValue] = useState('');
   const [genderItems, setGenderItems] = useState([
-    { label: 'Male', value: 'Male', icon: () => <Image source={require('./assets/male_icon.png')} style={styles.genderIcon} /> },
-    { label: 'Female', value: 'Female', icon: () => <Image source={require('./assets/female_icon.png')} style={styles.genderIcon} /> },
+    { label: 'Male', value: 'Male', icon: () => <Image source={require('../../src/assets/male_icon.png')} style={styles.genderIcon} /> },
+    { label: 'Female', value: 'Female', icon: () => <Image source={require('../../src/assets/female_icon.png')} style={styles.genderIcon} /> },
   ]);
 
   const handleRegister = async () => {
@@ -67,7 +67,7 @@ export default function RegisterScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Image 
-        source={require('./assets/ASPAbg.png')} 
+        source={require('../../src/assets/ASPAbg.png')} 
         style={styles.logo}
         resizeMode="contain"
       />

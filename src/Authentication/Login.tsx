@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Linking, ActivityIndicator, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { FIREBASE_AUTH } from './FirebaseConfig';
+import { FIREBASE_AUTH } from '../../src/Database/FirebaseConfig';
 
 const validateEmail = (email) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return re.test(email);
 };
 
-export default function LoginScreen({ navigation }) {
+function LoginScreen({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -71,7 +71,7 @@ export default function LoginScreen({ navigation }) {
       ) : (
         <>
           <Image 
-            source={require('./assets/ASPAbg.png')} 
+            source={require('../../src/assets/ASPAbg.png')} 
             style={styles.logo}
             resizeMode="contain"
           />
@@ -126,7 +126,7 @@ export default function LoginScreen({ navigation }) {
           <View style={styles.cardContainer}>
             <TouchableOpacity style={styles.card} onPress={handleFacebookLogin}>
               <Image
-                source={require('./assets/Facebook.png')}
+                source={require('../../src/assets/Facebook.png')}
                 style={styles.facebookIcon}
                 resizeMode="contain"
               />
@@ -134,7 +134,7 @@ export default function LoginScreen({ navigation }) {
 
             <TouchableOpacity style={styles.card} onPress={handleGoogleLogin}>
               <Image
-                source={require('./assets/google.png')} 
+                source={require('../../src/assets/google.png')} 
                 style={styles.googleIcon}
                 resizeMode="contain"
               />
@@ -271,3 +271,4 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
 });
+export default LoginScreen;

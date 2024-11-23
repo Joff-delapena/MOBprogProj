@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { signOut } from 'firebase/auth'; 
-import { FIREBASE_AUTH, FIREBASE_DB } from './FirebaseConfig'; 
+import { FIREBASE_AUTH, FIREBASE_DB } from '../../src/Database/FirebaseConfig'; 
 import { doc, setDoc } from 'firebase/firestore';
 
 const Settings = ({ navigation }) => {
@@ -60,7 +60,7 @@ const Settings = ({ navigation }) => {
         <View style={styles.container}>
             <View style={styles.logoContainer}>
                 <Image 
-                    source={require('./assets/ASPAbg.png')} 
+                    source={require('../../src/assets/ASPAbg.png')} 
                     style={styles.logo}
                     resizeMode="contain"
                 />
@@ -75,7 +75,10 @@ const Settings = ({ navigation }) => {
             <Text style={styles.settingsHeader}>Settings</Text>
 
             <View style={styles.section}>
-                <TouchableOpacity style={styles.rowWithBackground}>
+            <TouchableOpacity
+                    style={styles.rowWithBackground}
+                    onPress={() => navigation.navigate('Profile')}
+                >      
                     <Icon name="person-circle-outline" size={24} color="gray" />
                     <Text style={styles.item}>My Accounts</Text>
                     <Icon name="chevron-forward-outline" size={24} color="gray" />
@@ -83,7 +86,10 @@ const Settings = ({ navigation }) => {
             </View>
 
             <View style={styles.section}>
-                <TouchableOpacity style={styles.rowWithBackground}>
+            <TouchableOpacity
+                    style={styles.rowWithBackground}
+                    onPress={() => navigation.navigate('About')}
+                >      
                     <Icon name="notifications" size={24} color="gray" />  
                     <Text style={styles.item}>Notifications</Text>
                     <Icon name="chevron-forward-outline" size={24} color="gray" />
@@ -91,7 +97,10 @@ const Settings = ({ navigation }) => {
             </View>
 
             <View style={styles.section}>
-                <TouchableOpacity style={styles.rowWithBackground}>
+            <TouchableOpacity
+                    style={styles.rowWithBackground}
+                    onPress={() => navigation.navigate('About')}
+                >      
                     <Icon name="lock-closed" size={24} color="gray" />
                     <Text style={styles.item}>Privacy & Security</Text>
                     <Icon name="chevron-forward-outline" size={24} color="gray" />
@@ -99,7 +108,10 @@ const Settings = ({ navigation }) => {
             </View>
 
             <View style={styles.section}>
-                <TouchableOpacity style={styles.rowWithBackground}>
+                <TouchableOpacity
+                    style={styles.rowWithBackground}
+                    onPress={() => navigation.navigate('About')}
+                >      
                     <Icon name="headset" size={24} color="gray" />  
                     <Text style={styles.item}>Help and Support</Text>
                     <Icon name="chevron-forward-outline" size={24} color="gray" />
@@ -107,7 +119,10 @@ const Settings = ({ navigation }) => {
             </View>
 
             <View style={styles.section}>
-                <TouchableOpacity style={styles.rowWithBackground}>
+                <TouchableOpacity 
+                    style={styles.rowWithBackground} 
+                    onPress={() => navigation.navigate('About')}
+                >
                     <Icon name="information-circle" size={24} color="gray" />  
                     <Text style={styles.item}>About</Text>
                     <Icon name="chevron-forward-outline" size={24} color="gray" />
@@ -159,8 +174,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: '#1C1C2D',
-        padding: 15,
-        borderRadius: 10,
+        padding: 10,
+        borderRadius: 20,
     },
     item: {
         color: '#FFF',
@@ -168,10 +183,12 @@ const styles = StyleSheet.create({
     },
     logoutButton: {
         backgroundColor: '#cc00cc',
-        padding: 15,
-        borderRadius: 10,
+        padding: 10,
+        borderRadius: 8,
         alignItems: 'center',
-        marginTop: 30,
+        marginTop: 20,
+        width: 150,
+        left: 90
     },
     logoutButtonText: {
         color: '#FFF',

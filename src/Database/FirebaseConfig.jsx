@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBlYRsCisLW0OK43FP1do_OxfmZcMRr240",
+  apiKey: "AIzaSyBlYRsCisLW0OK43FP1do_OxfmZcMRr240",  
   authDomain: "aspa-fd117.firebaseapp.com",
   projectId: "aspa-fd117",
   storageBucket: "aspa-fd117.appspot.com",

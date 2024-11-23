@@ -4,11 +4,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Swiper from 'react-native-swiper';
 
-const image1 = require('./assets/Track screen time.png');
-const image2 = require('./assets/Goals.png');
-const image3 = require('./assets/reminder.png');
+const image1 = require('../../src/assets/Track screen time.png');
+const image2 = require('../../src/assets/Goals.png');
+const image3 = require('../../src/assets/reminder.png');
 
-export default function Homepage({ navigation,}) {
+export default function Homepage({ navigation }) {
     const [goals, setGoals] = useState([]);
 
     const handleAddGoal = (goal) => {
@@ -18,11 +18,13 @@ export default function Homepage({ navigation,}) {
     return (
         <LinearGradient colors={['#6a0dad', '#4b0082', '#2b0042']} style={styles.gradientContainer}>
             <ScrollView contentContainerStyle={styles.container}>
-                <TouchableOpacity style={styles.aboutButton} onPress={() => navigation.navigate('About')}>
-                    <Ionicons name="information-circle-outline" size={20} color="#fff" />
+           
+                <TouchableOpacity style={styles.profileButton} onPress={() => navigation.navigate('Profile')}>
+                    <View style={styles.profileIconContainer}>
+                        <Ionicons name="person-outline" size={18} color="#fff" />
+                    </View>
                 </TouchableOpacity>
-
-                <Image source={require('./assets/ASPAbg.png')} style={styles.logo} resizeMode="contain" />
+                <Image source={require('../../src/assets/ASPAbg.png')} style={styles.logo} resizeMode="contain" />
 
                 <View style={styles.swiperContainer}>
                     <Swiper
@@ -34,18 +36,18 @@ export default function Homepage({ navigation,}) {
                         autoplayTimeout={3}
                     >
                         <View style={styles.slide}>
-                            <Image source={require('./assets/Track screen time.png')} style={styles.slideImage} resizeMode="cover" />
+                            <Image source={require('../../src/assets/Track screen time.png')} style={styles.slideImage} resizeMode="cover" />
                             <View style={styles.overlay} />
                             <Text style={styles.slideText}>Track Screen Time</Text>
                         </View>
-                        
+
                         <View style={styles.slide}>
-                            <Image source={require('./assets/Goals.png')} style={styles.slideImage} resizeMode="cover" />
+                            <Image source={require('../../src/assets/Goals.png')} style={styles.slideImage} resizeMode="cover" />
                             <View style={styles.overlay} />
                             <Text style={styles.slideText}>Set Goals</Text>
                         </View>
                         <View style={styles.slide}>
-                            <Image source={require('./assets/reminder.png')} style={styles.slideImage} resizeMode="cover" />
+                            <Image source={require('../../src/assets/reminder.png')} style={styles.slideImage} resizeMode="cover" />
                             <View style={styles.overlay} />
                             <Text style={styles.slideText}>Get Reminders</Text>
                         </View>
@@ -77,11 +79,6 @@ export default function Homepage({ navigation,}) {
                     <Ionicons name="settings-outline" size={24} color="#fff" />
                     <Text style={styles.navText}>Settings</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Profile')}>
-                    <Ionicons name="person-outline" size={24} color="#fff" />
-                    <Text style={styles.navText}>Profile</Text>
-                </TouchableOpacity>
             </View>
         </LinearGradient>
     );
@@ -98,11 +95,20 @@ const styles = StyleSheet.create({
         padding: 20,
         paddingBottom: 30,
     },
-    aboutButton: {
-        alignSelf: 'flex-start',
-        marginBottom: 20,
-        left: 310,
-        bottom: 70
+    profileButton: {
+        position: 'absolute',
+        top: 40,
+        left: 20,
+    },
+    profileIconContainer: {
+        width: 40,
+        height: 30,
+        borderRadius: 20, 
+        backgroundColor: '#4b0082',
+        justifyContent: 'center',
+        alignItems: 'center',
+        left: 290,
+        top: 10
     },
     logo: {
         textAlign: 'center',
@@ -135,8 +141,8 @@ const styles = StyleSheet.create({
         bottom: 80,
     },
     slideImage: {
-        width: '100%', 
-        height: '100%', 
+        width: '100%',
+        height: '100%',
     },
     overlay: {
         position: 'absolute',
@@ -153,7 +159,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         marginLeft: 3,
         marginRight: 3,
-        top: 20
+        top: 20,
     },
     activeDot: {
         backgroundColor: '#fff',
@@ -162,7 +168,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginLeft: 3,
         marginRight: 3,
-        top: 20
+        top: 20,
     },
     bottomNavigation: {
         flexDirection: 'row',
@@ -187,7 +193,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 5,
         marginTop: 20,
-        bottom: 90
+        bottom: 90,
     },
     goalsButtonText: {
         color: '#fff',

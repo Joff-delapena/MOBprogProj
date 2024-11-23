@@ -1,18 +1,18 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { UserProvider } from './UserContext'; 
-import LoadingScreen from './LoadingScreen';
-import GetStartedScreen from './GetStartedScreen';
-import LoginScreen from './Login';             
-import RegisterScreen from './Register';    
-import Timer from './Timer';   
-import HomepageScreen from './Homepage'; 
-import About from './About'; 
-import Profile from './Profile';   
-import Settings from './Settings';
-import Support from './Support'
-import DailyGoals from './DailyGoals'
+import { UserProvider } from './src/Authentication/UserContext'; 
+import LoadingScreen from './src/Components/LoadingScreen';
+import GetStartedScreen from './src/Components/GetStartedScreen';
+import LoginScreen from './src/Authentication/Login';             
+import RegisterScreen from './src/Authentication/Register';    
+import Timer from './src/Dashboard/Timer';   
+import HomepageScreen from './src/Dashboard/Homepage'; 
+import About from './src/Dashboard/About'; 
+import Profile from './src/Dashboard/Profile';   
+import Settings from './src/Dashboard/Settings';
+import Support from './src/Dashboard/Support'
+import DailyGoals from './src/Dashboard/DailyGoals'
 
 
 
