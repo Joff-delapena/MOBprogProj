@@ -162,12 +162,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#00001A',
   },
   logo: {
-    width: '100%',
-    height: 200,
+    bottom: 80,
+    right: 130,
+    margin: 10,
+    height: 65,
   },
   header: {
     fontSize: 30,
-    marginBottom: 30,
+    bottom: 50,
     fontWeight: 'bold',
     color: '#fff'
   },

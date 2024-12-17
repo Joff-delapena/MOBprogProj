@@ -1,102 +1,113 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons'; 
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function ManageTime() {
-    const [selectedGoals, setSelectedGoals] = useState([]);
-    const [goals] = useState([
-        'Exercise',
-        'Read a book',
-        'Meditate',
-        'Sleep',
-        'Outdoor Activities',
-        'Studying',
-    ]);
-    const navigation = useNavigation();
+const DailyGoals = ({ navigation, route }) => {
+  const [selectedGoals, setSelectedGoals] = useState([]);
 
-    const toggleGoalSelection = (goal) => {
-        if (selectedGoals.includes(goal)) {
-            setSelectedGoals(selectedGoals.filter(item => item !== goal));
-        } else {
-            setSelectedGoals([...selectedGoals, goal]);
-        }
-    };
+  const goals = [
+    'Writing',
+    'Study',
+    'Outdoor Activities',
+    'Exercise',
+  ];
 
-    const addGoals = () => {
-        console.log('Added Time Plans:', selectedGoals);
-        navigation.navigate('Timer', { selectedGoals }); 
-        setSelectedGoals([]);
-    };
+  // Function to toggle goal selection
+  const toggleGoalSelection = (goal) => {
+    if (selectedGoals.includes(goal)) {
+      setSelectedGoals(selectedGoals.filter((item) => item !== goal));
+    } else {
+      setSelectedGoals([...selectedGoals, goal]);
+    }
+  };
 
-    const handleBack = () => {
-        navigation.goBack();
-    };
+  // Function to navigate back to the Timer screen with selected goals
+  const handleSaveGoals = () => {
+    navigation.navigate('Timer', { selectedGoals });
+  };
 
-    return (
-        <View style={styles.container}>
-            <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-                <Icon name="arrow-back" size={24} color="#000" />
-            </TouchableOpacity>
+  return (
+    <View style={styles.container}>
+      {/* Header with Back Button and "Add Goals" Text */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
+        </TouchableOpacity>
+        <Text style={styles.headerText}>Add Goals</Text>
+      </View>
 
-            <Text style={styles.heading}>Manage Your Time</Text>
+      {/* Goal List */}
+      <ScrollView contentContainerStyle={styles.listContainer}>
+        {goals.map((goal, index) => (
+          <TouchableOpacity
+            key={index}
+            style={[styles.goalItem, selectedGoals.includes(goal) && styles.selectedGoal]}
+            onPress={() => toggleGoalSelection(goal)}
+          >
+            <Text style={styles.goalText}>{goal}</Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
 
-            <FlatList
-                data={goals}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                    <TouchableOpacity 
-                        onPress={() => toggleGoalSelection(item)} 
-                        style={[styles.goalItem, selectedGoals.includes(item) && styles.selectedGoal]}
-                    >
-                        <Text style={styles.goalText}>{item}</Text>
-                    </TouchableOpacity>
-                )}
-            />
-
-            <TouchableOpacity onPress={addGoals} style={styles.button}>
-                <Text style={styles.buttonText}>Save Time Plan</Text>
-            </TouchableOpacity>
-        </View>
-    );
-}
+      {/* Save Button */}
+      <TouchableOpacity style={styles.saveButton} onPress={handleSaveGoals}>
+        <Text style={styles.saveButtonText}>Save Goals</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-    },
-    heading: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
-    },
-    goalItem: {
-        backgroundColor: '#f9f9f9',
-        padding: 15,
-        marginVertical: 5,
-        borderRadius: 5,
-    },
-    selectedGoal: {
-        backgroundColor: '#cc00cc',
-    },
-    goalText: {
-        fontSize: 16,
-    },
-    button: {
-        backgroundColor: '#cc00cc',
-        padding: 10,
-        borderRadius: 5,
-        alignItems: 'center',
-        marginTop: 20,
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 18,
-    },
-    backButton: {
-        marginBottom: 50,
-        marginTop: 30,
-        right: 5
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F5F5',
+  },
+  header: {
+    backgroundColor: '#6A0DAD',
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  backButton: {
+    padding: 5,
+    top: 15
+  },
+  headerText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginLeft: 20,
+    top: 15
+  },
+  listContainer: {
+    padding: 20,
+  },
+  goalItem: {
+    backgroundColor: '#FFFFFF',
+    padding: 15,
+    marginBottom: 15,
+    borderRadius: 8,
+  },
+  selectedGoal: {
+    backgroundColor: '#C000D5',
+  },
+  goalText: {
+    fontSize: 16,
+    color: '#000000',
+  },
+  saveButton: {
+    backgroundColor: '#6A0DAD',
+    padding: 15,
+    alignItems: 'center',
+    margin: 20,
+    borderRadius: 8,
+  },
+  saveButtonText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
 });
+
+export default DailyGoals;

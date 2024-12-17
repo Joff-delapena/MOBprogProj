@@ -11,9 +11,12 @@ import HomepageScreen from './src/Dashboard/Homepage';
 import About from './src/Dashboard/About'; 
 import Profile from './src/Dashboard/Profile';   
 import Settings from './src/Dashboard/Settings';
-import Support from './src/Dashboard/Support'
-import DailyGoals from './src/Dashboard/DailyGoals'
-
+import Support from './src/Dashboard/Support';
+import DailyGoals from './src/Dashboard/DailyGoals';
+import ScreenUnlocks from './src/Dashboard/ScreenUnlocks';
+import AppBlocker from './src/Dashboard/AppBlocker';
+import Notifications from './src/Dashboard/Notifications';
+import RecentGoals from './src/Dashboard/RecentGoals';
 
 
 const Stack = createStackNavigator();
@@ -31,15 +34,15 @@ export default function App() {
           <Stack.Screen name="Homepage" component={HomepageScreen} />
           <Stack.Screen name="About" component={About} /> 
           <Stack.Screen name="Profile" component={Profile} /> 
-          <Stack.Screen name="Settings"component= {Settings}/>
-          <Stack.Screen name="Support"component= {Support}/>
-          <Stack.Screen name="DailyGoals"component= {DailyGoals}/>
+          <Stack.Screen name="Settings" component={Settings} />
+          <Stack.Screen name="Support" component={Support} />
+          <Stack.Screen name="DailyGoals" component={DailyGoals} />
+          <Stack.Screen name="ScreenUnlocks" component={ScreenUnlocks} />
+          <Stack.Screen name="AppBlocker" component={AppBlocker} />
+          <Stack.Screen name="Notifications" component={Notifications} />
+          <Stack.Screen name="RecentGoals" component={RecentGoals} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>
   );
 }
-
-
-
- 

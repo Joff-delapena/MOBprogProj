@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     top: 110,
-    left: 20,
+    left: 60,
   },
   googleIcon: {
     width: 30,
